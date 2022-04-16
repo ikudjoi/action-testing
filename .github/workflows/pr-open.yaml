@@ -17,6 +17,6 @@ jobs:
     needs: quickish
     runs-on: ubuntu-latest
     steps:
-      - name: Semi Quick Action
+      - name: Longer Action
         run: |
           sleep 100
