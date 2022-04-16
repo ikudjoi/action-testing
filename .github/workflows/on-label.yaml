@@ -27,7 +27,9 @@ jobs:
               repo: context.repo.repo,
               ref: "${{ github.event.pull_request.head.sha }}"
             })
-            console.log(checkRuns)
+            for await (const cr of checkRuns.data.check_runs) {
+              console.log(cr)
+            }
       - name: Check if Other Builds Are Complete CLI
         run: |
           gh_output=$(gh pr checks ${{ github.event.number }} -R "${{ github.repository }}") || true
