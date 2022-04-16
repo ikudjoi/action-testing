@@ -1,0 +1,43 @@
+name: on-label
+
+on:
+  pull_request_target:
+    types:
+      - labeled
+    branches:
+      - main
+      - dev
+
+permissions:
+  contents: read
+  checks: read
+  pull-requests: read
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      # Check if other builds are complete
+      - name: Check if Docker Build is Complete
+        run: |
+          gh_output=$(gh pr checks ${{ github.event.number }} -R "${{ github.repository }}") || true
+
+          re="quickish[[:space:]]pass"
+          if [[ $gh_output =~ $re ]];
+          then
+              echo "Quick ok"
+          else
+              echo "Quick not succesful"
+              exit 1
+          fi
+
+          re="long-lasting[[:space:]]pass"
+          if [[ $gh_output =~ $re ]];
+          then
+              echo "Long ok"
+          else
+              echo "Long not succesful"
+              exit 1
+          fi
+        env:
+          GITHUB_TOKEN: ${{ github.token }}

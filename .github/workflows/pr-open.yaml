@@ -1,0 +1,22 @@
+name: pr-open
+
+on:
+  pull_request:
+    branches:
+      - main
+      - dev
+
+jobs:
+  quickish:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Semi Quick Action
+        run: |
+          sleep 10
+  long-lasting:
+    needs: quickish
+    runs-on: ubuntu-latest
+    steps:
+      - name: Semi Quick Action
+        run: |
+          sleep 100
