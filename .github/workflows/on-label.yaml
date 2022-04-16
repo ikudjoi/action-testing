@@ -22,7 +22,8 @@ jobs:
         uses: actions/github-script@v6
         with:
           script: |
-            console.log(${{ toJSON(github) }})
+            console.log(${{ toJSON(github.event) }})
+            console.log(${{ toJSON(github.event.pull_request) }})
             const checkRuns = await github.request('GET /repos/{owner}/{repo}/commits/{ref}/check-runs', {
               owner: context.repo.owner,
               repo: context.repo.repo,
