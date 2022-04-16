@@ -22,7 +22,12 @@ jobs:
         uses: actions/github-script@v6
         with:
           script: |
-            github.rest.check-runs()
+            console.log(${{ toJSON(github) }})
+            const checkRuns = await github.request('GET /repos/{owner}/{repo}/commits/{ref}/check-runs', {
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              ref: github.event.pull_request.head.sha
+            })
       - name: Check if Other Builds Are Complete CLI
         run: |
           gh_output=$(gh pr checks ${{ github.event.number }} -R "${{ github.repository }}") || true
