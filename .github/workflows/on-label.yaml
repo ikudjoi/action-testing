@@ -18,7 +18,12 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       # Check if other builds are complete
-      - name: Check if Docker Build is Complete
+      - name: Check if Other Builds Are Complete API
+        uses: actions/github-script@v6
+        with:
+          script: |
+            github.rest.check-runs()
+      - name: Check if Other Builds Are Complete CLI
         run: |
           gh_output=$(gh pr checks ${{ github.event.number }} -R "${{ github.repository }}") || true
 
