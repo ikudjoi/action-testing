@@ -15,12 +15,19 @@ runs:
       uses: actions/github-script@v6
       with:
         script: |
-          const checks = "${{ inputs.jobs }}".split(',');
+          const jobs = "${{ inputs.jobs }}".split(',');
           const checkRuns = await github.request('GET /repos/{owner}/{repo}/commits/{ref}/check-runs', {
             owner: context.repo.owner,
             repo: context.repo.repo,
             ref: "${{ inputs.sha }}"
           })
+          var conclusions = {};
           for await (const cr of checkRuns.data.check_runs) {
-            console.log(cr)
+            for(const job of jobs) {
+              if (cr.name == job) {
+                conclusions[job] = cr.conclusion
+              }
+            }
           }
+
+          console.log(conclusions)
