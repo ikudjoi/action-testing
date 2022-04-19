@@ -15,13 +15,16 @@ runs:
       uses: actions/github-script@v6
       with:
         script: |
+          // Split input jobs to an array.
           const jobs = "${{ inputs.jobs }}".split(',');
+          // Retrieve job statuses from GitHub API
           const checkRuns = await github.request('GET /repos/{owner}/{repo}/commits/{ref}/check-runs', {
             owner: context.repo.owner,
             repo: context.repo.repo,
             ref: "${{ inputs.sha }}"
           })
 
+          // Get requested job conclusions from the API result.
           var conclusions = {};
           for await (const cr of checkRuns.data.check_runs) {
             for (const job of jobs) {
@@ -31,6 +34,7 @@ runs:
             }
           }
 
+          // Construct result variable
           var resultMsg = "";
           for (const job of jobs) {
             const conclusion = conclusions[job] ?? "not available"
@@ -39,6 +43,7 @@ runs:
             }
           }
 
+          // Fail if there was a unsuccesful job
           if (resultMsg.length > 0) {
             console.error(resultMsg)
             process.exit(1);

@@ -1,0 +1,28 @@
+name: on-comment
+
+on:
+  issue_comment:
+    types:
+      - created
+
+permissions:
+  contents: read
+  checks: read
+  pull-requests: read
+
+jobs:
+  check-on-comment:
+    runs-on: ubuntu-latest
+    # Run this workflow only if someone comments 'deploy' on a Pull Request
+    if: github.event.issue.pull_request && github.event.comment.body == 'deploy'
+    steps:
+      - uses: actions/checkout@v3
+      # Check if other builds are complete
+      - name: Debug
+        run: |
+          echo ${{ github.event.issue.pull_request }}
+#      - name: Check if Other Builds Are Complete
+#        uses: ./.github/workflows/check-status
+#        with:
+#          jobs: long-lasting,quickish
+#          sha: ${{ github.event.pull_request.head.sha }}
