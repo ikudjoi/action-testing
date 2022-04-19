@@ -8,7 +8,6 @@ outputs:
   head-sha:
     description: Head SHA of the Pull Request Branch
     value: ${{ steps.get-sha.outputs.result }}
-    type: string
 runs:
   using: composite
   steps:
