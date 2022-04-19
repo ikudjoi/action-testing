@@ -20,7 +20,7 @@ jobs:
       # Check if other builds are complete
       - name: Debug
         run: |
-          echo "${{ toJSON(github.event.issue.pull_request) }}"
+          echo "${{ toJSON(github.event.issue) }}"
 #      - name: Check if Other Builds Are Complete
 #        uses: ./.github/workflows/check-status
 #        with:
