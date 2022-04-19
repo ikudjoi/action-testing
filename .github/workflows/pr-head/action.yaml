@@ -7,10 +7,10 @@ inputs:
 outputs:
   head-sha:
     description: Head SHA of the Pull Request Branch
-    value: ${{ steps.get-head.outputs.sha }}
+    value: ${{ fromJson(steps.get-head.outputs).sha }}
   head-ref:
     description: Head ref of the Pull Request Branch
-    value: ${{ steps.get-head.outputs.ref }}
+    value: ${{ fromJson(steps.get-head.outputs).ref }}
 runs:
   using: composite
   steps:
@@ -27,5 +27,4 @@ runs:
           })
 
           const head = await pr.data.head;
-          console.log(head)
           return head;
