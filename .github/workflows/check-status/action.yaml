@@ -45,8 +45,8 @@ runs:
 
           // Fail if there was a unsuccesful job
           if (resultMsg.length > 0) {
-            console.error(resultMsg)
-            process.exit(1);
+            core.setFailed(resultMsg)
+            return
           }
 
           console.log("All required checks have passed succesfully!")

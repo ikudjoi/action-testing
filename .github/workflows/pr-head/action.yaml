@@ -5,12 +5,12 @@ inputs:
     required: true
     type: number
 outputs:
-  head-sha:
-    description: Head SHA of the Pull Request Branch
-    value: ${{ fromJson(steps.get-head.outputs).sha }}
   head-ref:
     description: Head ref of the Pull Request Branch
-    value: ${{ fromJson(steps.get-head.outputs).ref }}
+    value: ${{ steps.get-head.outputs.head-ref }}
+  head-sha:
+    description: Head SHA of the Pull Request Branch
+    value: ${{ steps.get-head.outputs.head-sha }}
 runs:
   using: composite
   steps:
@@ -27,4 +27,5 @@ runs:
           })
 
           const head = await pr.data.head;
-          return head;
+          core.setOutput('head-ref', head.ref);
+          core.setOutput('head-sha', head.sha);
