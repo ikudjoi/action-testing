@@ -26,6 +26,5 @@ runs:
             issue_number: ${{ inputs.issue-number }}
           })
 
-          console.log(await pr.data)
           const head = await pr.data.head;
           return head;
