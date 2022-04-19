@@ -21,8 +21,7 @@ jobs:
       - name: Debug
         run: |
           echo "${{ toJSON(github.event.issue) }}"
-#      - name: Check if Other Builds Are Complete
-#        uses: ./.github/workflows/check-status
-#        with:
-#          jobs: long-lasting,quickish
-#          sha: ${{ github.event.pull_request.head.sha }}
+      - name: Get Pull Request Head SHA
+        uses: ./.github/workflows/pr-head-sha
+        with:
+          issue-number: ${{ github.event.issue.number }}

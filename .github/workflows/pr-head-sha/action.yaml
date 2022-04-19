@@ -1,0 +1,21 @@
+name: Get Pull Request Head SHA
+inputs:
+  issue-number:
+    description: 'Issue Number of the Pull Request'
+    required: true
+    type: number
+runs:
+  using: composite
+  steps:
+    - name: Get Head SHA
+      uses: actions/github-script@v6
+      with:
+        script: |
+          // Retrieve job statuses from GitHub API
+          const issue = await github.request('GET /repos/{owner}/{repo}/issues/{issue_number}', {
+            owner: context.repo.owner,
+            repo: context.repo.repo,
+            issue_number: ${{ inputs.issue-number }}
+          })
+
+          console.log(issue)
