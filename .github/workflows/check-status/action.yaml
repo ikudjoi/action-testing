@@ -49,4 +49,4 @@ runs:
             process.exit(1);
           }
 
-          console.log("All checks have passed succesfully!")
+          console.log("All required checks have passed succesfully!")

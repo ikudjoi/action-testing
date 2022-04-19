@@ -1,4 +1,4 @@
-name: Get Pull Request Head SHA
+name: Get Pull Request Branch Information
 inputs:
   issue-number:
     description: 'Issue Number of the Pull Request'
@@ -11,7 +11,7 @@ outputs:
 runs:
   using: composite
   steps:
-    - name: Get Head SHA
+    - name: Get PR Branch Information
       uses: actions/github-script@v6
       id: get-sha
       with:
@@ -24,6 +24,7 @@ runs:
             issue_number: ${{ inputs.issue-number }}
           })
 
+          console.log(await pr.data)
           const head_sha = await pr.data.head.sha;
           console.log(head_sha)
           return head_sha

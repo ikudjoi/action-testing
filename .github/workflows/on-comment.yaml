@@ -17,9 +17,10 @@ jobs:
     if: github.event.issue.pull_request && github.event.comment.body == 'deploy'
     steps:
       - uses: actions/checkout@v3
+      # Issue comment is not directly linked to Pull Request Branch, use custom github-script based action
       - name: Get Pull Request Head SHA
         id: get-sha
-        uses: ./.github/workflows/pr-head-sha
+        uses: ./.github/workflows/pr-head
         with:
           issue-number: ${{ github.event.issue.number }}
       # Check if other builds are complete
@@ -28,3 +29,7 @@ jobs:
         with:
           jobs: long-lasting,quickish
           sha: ${{ steps.get-sha.outputs.head-sha }}
+      # Checkout again with head SHA
+      - uses: actions/checkout@v3
+        with:
+          ref: ${{ steps.get-sha.outputs.head-sha }}
