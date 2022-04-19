@@ -7,10 +7,10 @@ inputs:
 outputs:
   head-sha:
     description: Head SHA of the Pull Request Branch
-    value: ${{ steps.get-head.outputs.result.sha }}
+    value: ${{ steps.get-head.outputs.sha }}
   head-ref:
     description: Head ref of the Pull Request Branch
-    value: ${{ steps.get-head.outputs.result.ref }}
+    value: ${{ steps.get-head.outputs.ref }}
 runs:
   using: composite
   steps:
