@@ -21,14 +21,18 @@ runs:
             repo: context.repo.repo,
             ref: "${{ inputs.sha }}"
           })
+
           var conclusions = {};
           for await (const cr of checkRuns.data.check_runs) {
-            for(const job of jobs) {
+            for (const job of jobs) {
               if (cr.name == job) {
                 conclusions[job] = cr.conclusion
               }
-              console.log(`${cr.name} ${job}`)
             }
           }
 
-          console.log(conclusions)
+          var resultMsg = "";
+          for (const job of jobs) {
+            const conclusion = conclusions[job] ?? "not available"
+            console.log(conclusion)
+          }
