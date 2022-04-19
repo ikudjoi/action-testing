@@ -19,37 +19,7 @@ jobs:
     steps:
       # Check if other builds are complete
       - name: Check if Other Builds Are Complete API
-        uses: actions/github-script@v6
+        uses: ./.github/workflows/check-status
         with:
-          script: |
-            const checkRuns = await github.request('GET /repos/{owner}/{repo}/commits/{ref}/check-runs', {
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              ref: "${{ github.event.pull_request.head.sha }}"
-            })
-            for await (const cr of checkRuns.data.check_runs) {
-              console.log(cr)
-            }
-      - name: Check if Other Builds Are Complete CLI
-        run: |
-          gh_output=$(gh pr checks ${{ github.event.number }} -R "${{ github.repository }}") || true
-
-          re="quickish[[:space:]]pass"
-          if [[ $gh_output =~ $re ]];
-          then
-              echo "Quick ok"
-          else
-              echo "Quick not succesful"
-              exit 1
-          fi
-
-          re="long-lasting[[:space:]]pass"
-          if [[ $gh_output =~ $re ]];
-          then
-              echo "Long ok"
-          else
-              echo "Long not succesful"
-              exit 1
-          fi
-        env:
-          GITHUB_TOKEN: ${{ github.token }}
+          jobs: docker,test
+          sha: ${{ github.event.pull_request.head.sha }}

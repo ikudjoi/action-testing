@@ -1,0 +1,26 @@
+name: Check Job Status
+inputs:
+  sha:
+    description: 'SHA of the Git Commit to Check'
+    required: true
+    type: string
+  jobs:
+    description: 'Comma-separated list of Jobs to Check'
+    required: true
+    type: string
+runs:
+  using: composite
+  steps:
+    - name: Check if Other Builds Are Complete
+      uses: actions/github-script@v6
+      with:
+        script: |
+          const checks = "${{ inputs.jobs }}".split(',');
+          const checkRuns = await github.request('GET /repos/{owner}/{repo}/commits/{ref}/check-runs', {
+            owner: context.repo.owner,
+            repo: context.repo.repo,
+            ref: "${{ inputs.sha }}"
+          })
+          for await (const cr of checkRuns.data.check_runs) {
+            console.log(cr)
+          }
