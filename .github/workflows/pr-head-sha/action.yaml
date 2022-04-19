@@ -4,12 +4,19 @@ inputs:
     description: 'Issue Number of the Pull Request'
     required: true
     type: number
+outputs:
+  head-sha:
+    description: Head SHA of the Pull Request Branch
+    value: ${{ steps.get-sha.outputs.result }}
+    type: string
 runs:
   using: composite
   steps:
     - name: Get Head SHA
       uses: actions/github-script@v6
+      id: get-sha
       with:
+        result-encoding: string
         script: |
           // Retrieve job statuses from GitHub API
           const pr = await github.request('GET /repos/{owner}/{repo}/pulls/{issue_number}', {
@@ -18,4 +25,6 @@ runs:
             issue_number: ${{ inputs.issue-number }}
           })
 
-          console.log(pr)
+          const head_sha = await pr.data.head.sha;
+          console.log(head_sha)
+          return head_sha

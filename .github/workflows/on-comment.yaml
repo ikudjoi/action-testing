@@ -22,6 +22,12 @@ jobs:
         run: |
           echo "${{ toJSON(github.event.issue) }}"
       - name: Get Pull Request Head SHA
+        id: get-sha
         uses: ./.github/workflows/pr-head-sha
         with:
           issue-number: ${{ github.event.issue.number }}
+      - name: Check if Other Builds Are Complete
+        uses: ./.github/workflows/check-status
+        with:
+          jobs: long-lasting,quickish
+          sha: ${{ steps.get-sha.outputs.head-sha }}
