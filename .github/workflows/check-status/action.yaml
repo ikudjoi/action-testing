@@ -27,6 +27,7 @@ runs:
               if (cr.name == job) {
                 conclusions[job] = cr.conclusion
               }
+              console.log(`${cr.name} ${job}`)
             }
           }
 
