@@ -5,6 +5,12 @@ inputs:
     required: true
     type: number
 outputs:
+  base-ref:
+    description: Base ref of the Pull Request Branch
+    value: ${{ steps.get-head.outputs.base-ref }}
+  base-sha:
+    description: Base SHA of the Pull Request Branch
+    value: ${{ steps.get-head.outputs.base-sha }}
   head-ref:
     description: Head ref of the Pull Request Branch
     value: ${{ steps.get-head.outputs.head-ref }}
@@ -26,6 +32,7 @@ runs:
             issue_number: ${{ inputs.issue-number }}
           })
 
-          const head = await pr.data.head;
-          core.setOutput('head-ref', head.ref);
-          core.setOutput('head-sha', head.sha);
+          core.setOutput('base-ref', pr.data.base.ref);
+          core.setOutput('base-sha', pr.data.base.sha);
+          core.setOutput('head-ref', pr.data.head.ref);
+          core.setOutput('head-sha', pr.data.head.sha);

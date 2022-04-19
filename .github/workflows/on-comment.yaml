@@ -20,7 +20,7 @@ jobs:
       # Issue comment is not directly linked to Pull Request Branch, use custom github-script based action
       - name: Get Pull Request Head SHA
         id: get-sha
-        uses: ./.github/workflows/pr-head
+        uses: ./.github/workflows/pr-branch-info
         with:
           issue-number: ${{ github.event.issue.number }}
       # Check if other builds are complete
