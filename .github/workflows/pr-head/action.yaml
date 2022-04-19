@@ -7,16 +7,16 @@ inputs:
 outputs:
   head-sha:
     description: Head SHA of the Pull Request Branch
-    value: ${{ steps.get-sha.outputs.result.sha }}
+    value: ${{ steps.get-head.outputs.result.sha }}
   head-ref:
     description: Head ref of the Pull Request Branch
-    value: ${{ steps.get-sha.outputs.result.ref }}
+    value: ${{ steps.get-head.outputs.result.ref }}
 runs:
   using: composite
   steps:
     - name: Get PR Branch Information
       uses: actions/github-script@v6
-      id: get-sha
+      id: get-head
       with:
         script: |
           // Retrieve job statuses from GitHub API
@@ -27,4 +27,5 @@ runs:
           })
 
           const head = await pr.data.head;
+          console.log(head)
           return head;
