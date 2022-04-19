@@ -12,10 +12,10 @@ runs:
       with:
         script: |
           // Retrieve job statuses from GitHub API
-          const issue = await github.request('GET /repos/{owner}/{repo}/issues/{issue_number}', {
+          const pr = await github.request('GET /repos/{owner}/{repo}/pulls/{issue_number}', {
             owner: context.repo.owner,
             repo: context.repo.repo,
             issue_number: ${{ inputs.issue-number }}
           })
 
-          console.log(issue)
+          console.log(pr)
