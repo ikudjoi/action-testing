@@ -11,7 +11,7 @@ permissions:
   pull-requests: read
 
 jobs:
-  check-on-comment:
+  dispatch-on-comment:
     runs-on: ubuntu-latest
     # Run this workflow only if someone comments 'deploy' on a Pull Request
     if: github.event.issue.pull_request && github.event.comment.body == 'deploy'
@@ -24,12 +24,12 @@ jobs:
         with:
           issue-number: ${{ github.event.issue.number }}
       # Check if other builds are complete
-      - name: Check if Other Builds Are Complete
-        uses: ./.github/workflows/check-status
+      - name: Dispatch
+        uses: actions/github-script@v6
         with:
-          jobs: long-lasting,quickish
-          sha: ${{ steps.get-sha.outputs.head-sha }}
-      # Checkout again with head SHA
-      - uses: actions/checkout@v3
-        with:
-          ref: ${{ steps.get-sha.outputs.head-sha }}
+          script: |
+            const workflows = await github.request('GET /repos/{owner}/{repo}/actions/workflows', {
+              owner: context.repo.owner,
+              repo: context.repo.repo
+            });
+            console.log(workflows)
