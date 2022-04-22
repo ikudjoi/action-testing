@@ -12,11 +12,11 @@ jobs:
     steps:
       - name: Semi Quick Action
         run: |
-          sleep 5
+          sleep 2
   long-lasting:
     needs: quickish
     runs-on: ubuntu-latest
     steps:
       - name: Longer Action
         run: |
-          sleep 20
+          sleep 5
