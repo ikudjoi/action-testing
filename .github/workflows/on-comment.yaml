@@ -32,4 +32,4 @@ jobs:
               owner: context.repo.owner,
               repo: context.repo.repo
             });
-            console.log(workflows)
+            console.log(workflows.data.workflows)
