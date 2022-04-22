@@ -40,5 +40,5 @@ jobs:
               owner: context.repo.owner,
               repo: context.repo.repo,
               workflow: deployWorkflowId,
-              ref: ${{ steps.branch-info.outputs.head-ref }}
+              ref: '${{ steps.branch-info.outputs.head-ref }}'
             });
