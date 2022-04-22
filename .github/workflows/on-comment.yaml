@@ -32,4 +32,6 @@ jobs:
               owner: context.repo.owner,
               repo: context.repo.repo
             });
-            console.log(workflows.data.workflows)
+
+            deployWorkflow = workflows.data.workflows.find(i => i.name == 'deploy');
+            console.log(deployWorkflow)
