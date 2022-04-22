@@ -21,21 +21,13 @@ jobs:
         with:
           issue-number: ${{ github.event.issue.number }}
       # Check if other builds are complete
-      - name: Dispatch
+      - name: Label Eligible for Deploy
         uses: actions/github-script@v6
         with:
           script: |
-            const workflows = await github.request('GET /repos/{owner}/{repo}/actions/workflows', {
-              owner: context.repo.owner,
-              repo: context.repo.repo
-            });
-
-            deployWorkflowId = workflows.data.workflows.find(i => i.name == 'deploy').id;
-            console.log(deployWorkflowId)
-
-            await github.request('GET /repos/{owner}/{repo}/actions/workflows/{workflow}/dispatches', {
+            await github.request('POST /repos/{owner}/{repo}/issues/{issue_number}/labels', {
               owner: context.repo.owner,
               repo: context.repo.repo,
-              workflow: deployWorkflowId,
-              ref: '${{ steps.branch-info.outputs.head-ref }}'
+              issue_number: ${{ github.event.issue.number }},
+              labels: ['deploy']
             });
